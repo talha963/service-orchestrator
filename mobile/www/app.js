@@ -1,5 +1,5 @@
 // ==================== CONFIG ====================
-let API_URL = localStorage.getItem('API_URL') || (window.location.protocol.startsWith('http') ? window.location.origin : 'http://localhost:8000');
+let API_URL = localStorage.getItem('API_URL') || (window.location.protocol.startsWith('http') ? window.location.origin : 'https://talha-khan4131-service-orchestrator.hf.space');
 let USER_ID = localStorage.getItem('USER_ID') || 'mobile_user_1';
 let USER_LAT = parseFloat(localStorage.getItem('USER_LAT')) || 33.6310;
 let USER_LNG = parseFloat(localStorage.getItem('USER_LNG')) || 73.0120;
