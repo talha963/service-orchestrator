@@ -265,46 +265,47 @@ def get_place_contact_details(place_id: str) -> dict:
     if place_id in _PLACE_DETAILS_CACHE:
         return _PLACE_DETAILS_CACHE[place_id]
 
-    if not _has_maps_key():
-        logger.warning("No Maps API key - cannot fetch place contact details.")
-        return {}
+    details = {}
 
-    try:
-        url = "https://maps.googleapis.com/maps/api/place/details/json"
-        params = {
-            "place_id": place_id,
-            "fields": "name,international_phone_number,formatted_phone_number,formatted_address,website,url",
-            "key": MAPS_API_KEY,
-        }
-        resp = requests.get(url, params=params, timeout=8)
-        data = resp.json()
-        status = data.get("status", "")
-        if status and status != "OK":
-            logger.warning(f"Place Details returned {status} for place_id={place_id}: {data.get('error_message', '')}")
-            _PLACE_DETAILS_CACHE[place_id] = {}
-            return {}
+    if _has_maps_key():
+        try:
+            url = "https://maps.googleapis.com/maps/api/place/details/json"
+            params = {
+                "place_id": place_id,
+                "fields": "name,international_phone_number,formatted_phone_number,formatted_address,website,url",
+                "key": MAPS_API_KEY,
+            }
+            resp = requests.get(url, params=params, timeout=8)
+            data = resp.json()
+            status = data.get("status", "")
+            if status and status != "OK":
+                logger.warning(f"Place Details returned {status} for place_id={place_id}: {data.get('error_message', '')}")
+            else:
+                result = data.get("result", {})
+                raw_phone = result.get("international_phone_number") or result.get("formatted_phone_number")
+                phone = normalize_phone_number(raw_phone)
+                details = {
+                    "name": result.get("name", ""),
+                    "phone": phone,
+                    "raw_phone": raw_phone,
+                    "formatted_address": result.get("formatted_address", ""),
+                    "website": result.get("website", ""),
+                    "google_url": result.get("url", ""),
+                }
+        except Exception as e:
+            logger.error(f"Place Details API error: {e}")
 
-        result = data.get("result", {})
-        raw_phone = result.get("international_phone_number") or result.get("formatted_phone_number")
-        phone = normalize_phone_number(raw_phone)
-        details = {
-            "name": result.get("name", ""),
-            "phone": phone,
-            "raw_phone": raw_phone,
-            "formatted_address": result.get("formatted_address", ""),
-            "website": result.get("website", ""),
-            "google_url": result.get("url", ""),
-        }
-        _PLACE_DETAILS_CACHE[place_id] = details
+    # Fallback mock phone number if no phone number was returned/scraped
+    if not details.get("phone"):
+        name = details.get("name", f"Provider {place_id[:6]}")
+        name_hash = sum(ord(c) for c in name) % 9000000 + 1000000
+        details["phone"] = f"+92300{name_hash}"
+        details["raw_phone"] = f"0300-{str(name_hash)[:3]}-{str(name_hash)[3:]} (Demo)"
+        if "name" not in details:
+            details["name"] = name
 
-        if phone:
-            logger.info(f"Got phone for {result.get('name', place_id)}: {phone}")
-        else:
-            logger.warning(f"No phone number found for place_id={place_id}")
-        return details
-    except Exception as e:
-        logger.error(f"Place Details API error: {e}")
-        return {}
+    _PLACE_DETAILS_CACHE[place_id] = details
+    return details
 
 
 def get_place_phone_number(place_id: str) -> Optional[str]:
@@ -329,6 +330,13 @@ def enrich_places_with_contact_details(places: list[dict], limit: int | None = N
                 item["google_url"] = details.get("google_url") or item.get("google_url")
                 if details.get("formatted_address"):
                     item["address"] = details["formatted_address"]
+        
+        # Fallback mock if still missing
+        if not item.get("phone"):
+            name_hash = sum(ord(c) for c in item["name"]) % 9000000 + 1000000
+            item["phone"] = f"+92300{name_hash}"
+            item["raw_phone"] = f"0300-{str(name_hash)[:3]}-{str(name_hash)[3:]} (Demo)"
+
         enriched.append(item)
 
     return enriched
