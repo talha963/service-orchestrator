@@ -19,7 +19,7 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from openai import AsyncOpenAI
 from pydantic import BaseModel, Field
 
@@ -1012,7 +1012,7 @@ async def health():
 # Serve mobile web app
 @app.get("/app")
 async def serve_mobile_app():
-    return FileResponse("mobile/index.html")
+    return RedirectResponse(url="/mobile/index.html")
 
 app.mount("/mobile", StaticFiles(directory="mobile"), name="mobile")
 
