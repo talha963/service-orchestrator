@@ -1,3 +1,13 @@
+---
+title: Service Orchestrator
+emoji: 🚀
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+app_port: 7860
+---
+
 # Service Orchestrator — Antigravity Edition 🚀
 
 An **agentic AI system** for the informal service economy that automates the full service lifecycle: multilingual request understanding → provider matching → scheduling → dynamic pricing → booking → follow-up → feedback → dispute resolution.
