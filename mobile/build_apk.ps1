@@ -48,10 +48,10 @@ cd $scriptDir
 # Create www folder and move assets
 if (!(Test-Path "www")) {
     New-Item -ItemType Directory -Path "www" | Out-Null
-    Copy-Item "index.html" "www\" -Force
-    Copy-Item "styles.css" "www\" -Force
-    Copy-Item "app.js" "www\" -Force
 }
+Copy-Item "index.html" "www\" -Force
+Copy-Item "styles.css" "www\" -Force
+Copy-Item "app.js" "www\" -Force
 
 if (!(Test-Path "package.json")) {
     cmd.exe /c "npm init -y"
