@@ -61,7 +61,9 @@ py orchestrator.py
 ```
 
 ### 4. Open the Mobile App
-Open in browser: **http://localhost:8000/app**
+- **Local Development:** Open in browser: **http://localhost:8000/app**
+- **Production Server (Hugging Face):** **`https://talha-khan4131-service-orchestrator.hf.space`**
+  *(Copy this URL and paste it into the **API Server URL** settings box inside the APK if you need to manual reconnect)*
 
 ### 5. Try the Example Scenario
 Type in the chat:
