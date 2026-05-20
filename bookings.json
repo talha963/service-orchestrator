@@ -1,0 +1,10 @@
+[
+    {
+        "booking_id": "BK-3078",
+        "user_id": "user_001",
+        "provider": "Ali AC Services",
+        "price": 1500,
+        "status": "confirmed",
+        "timestamp": "2026-05-14T18:45:42.025776+00:00"
+    }
+]

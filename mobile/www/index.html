@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Service Orchestrator — AI-powered on-demand service marketplace. Find the nearest best provider for any service.">
+    <meta name="theme-color" content="#0a0a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Service Orchestrator — Antigravity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- SPLASH SCREEN -->
+        <div id="splash-screen" class="screen active">
+            <div class="splash-ambient splash-ambient-1"></div>
+            <div class="splash-ambient splash-ambient-2"></div>
+            <div class="splash-ambient splash-ambient-3"></div>
+            <div class="splash-content">
+                <div class="splash-logo-container">
+                    <div class="splash-icon-ring"></div>
+                    <div class="splash-icon-ring-inner"></div>
+                    <div class="splash-icon">🚀</div>
+                </div>
+                <h1 class="splash-title">Service<br><span class="gradient-text-large">Orchestrator</span></h1>
+                <p class="splash-subtitle">Antigravity AI Engine</p>
+                <div class="splash-loader-wrapper">
+                    <div class="splash-loader-text">Initializing core systems...</div>
+                    <div class="splash-loader">
+                        <div class="loader-bar"></div>
+                        <div class="loader-glow"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NAVIGATION BAR (bottom) -->
+        <nav id="bottom-nav" class="hidden">
+            <button class="nav-btn active" data-screen="home" id="nav-home">
+                <span class="material-icons-round">chat_bubble</span>
+                <span class="nav-label">Chat</span>
+            </button>
+            <button class="nav-btn" data-screen="map" id="nav-map">
+                <span class="material-icons-round">map</span>
+                <span class="nav-label">Map</span>
+            </button>
+            <button class="nav-btn" data-screen="bookings" id="nav-bookings">
+                <span class="material-icons-round">calendar_today</span>
+                <span class="nav-label">Bookings</span>
+            </button>
+            <button class="nav-btn" data-screen="traces" id="nav-traces">
+                <span class="material-icons-round">psychology</span>
+                <span class="nav-label">AI Traces</span>
+            </button>
+            <button class="nav-btn" data-screen="dashboard" id="nav-dashboard">
+                <span class="material-icons-round">dashboard</span>
+                <span class="nav-label">Dashboard</span>
+            </button>
+        </nav>
+
+        <!-- HOME / CHAT SCREEN -->
+        <div id="home-screen" class="screen">
+            <header class="screen-header">
+                <div class="header-left">
+                    <div class="header-avatar">🤖</div>
+                    <div>
+                        <h2 class="header-title">Antigravity Assistant</h2>
+                        <span class="header-status online" id="location-status">📍 Detecting location...</span>
+                    </div>
+                </div>
+                <button class="icon-btn gps-btn" id="gps-btn" title="Detect my location">
+                    <span class="material-icons-round">my_location</span>
+                </button>
+                <button class="icon-btn" id="settings-btn">
+                    <span class="material-icons-round">settings</span>
+                </button>
+            </header>
+            <div id="chat-messages" class="chat-container">
+                <div class="chat-date-divider">Today</div>
+                <div class="message bot-message">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-bubble">
+                        <p>Assalamu Alaikum! 👋</p>
+                        <p>I'm your <strong>Antigravity Service Assistant</strong>. Tell me what problem you're facing — I'll find the <strong>nearest best person</strong> and send them to your door!</p>
+                        <p class="message-hint">Try: "My faucet is leaking" or "bijli ka masla hai" or "need AC repair ASAP"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <div class="quick-actions">
+                    <button class="quick-btn" data-msg="My AC is not cooling, need repair ASAP">🔧 AC Repair</button>
+                    <button class="quick-btn" data-msg="Lights flickering, need an electrician">⚡ Electrician</button>
+                    <button class="quick-btn" data-msg="Pipe is leaking badly, need a plumber">🔧 Plumber</button>
+                    <button class="quick-btn" data-msg="Need a tutor for maths">📚 Tutor</button>
+                    <button class="quick-btn" data-msg="Car won't start, need a mechanic">🚗 Mechanic</button>
+                </div>
+                <div class="input-row">
+                    <input type="text" id="chat-input" placeholder="Describe your problem..." autocomplete="off">
+                    <button id="send-btn" class="send-button">
+                        <span class="material-icons-round">send</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAP SCREEN -->
+        <div id="map-screen" class="screen">
+            <header class="screen-header">
+                <h2 class="header-title">📍 Nearby Providers</h2>
+                <button class="icon-btn gps-btn" id="map-gps-btn" title="Re-center on my location">
+                    <span class="material-icons-round">my_location</span>
+                </button>
+            </header>
+            <div class="map-filters" id="map-filters">
+                <button class="filter-chip active" data-service="electrician">⚡ Electrician</button>
+                <button class="filter-chip" data-service="plumber">🔧 Plumber</button>
+                <button class="filter-chip" data-service="ac repair">❄️ AC Repair</button>
+                <button class="filter-chip" data-service="mechanic">🚗 Mechanic</button>
+                <button class="filter-chip" data-service="beautician">💅 Beautician</button>
+                <button class="filter-chip" data-service="tutor">📚 Tutor</button>
+                <button class="filter-chip" data-service="carpenter">🪚 Carpenter</button>
+                <button class="filter-chip" data-service="painter">🎨 Painter</button>
+                <button class="filter-chip" data-service="cleaning">🧹 Cleaning</button>
+                <button class="filter-chip" data-service="locksmith">🔑 Locksmith</button>
+            </div>
+            <div id="map-container" class="map-container">
+                <div class="map-placeholder" id="map-placeholder">
+                    <span class="material-icons-round" style="font-size:64px;opacity:0.3">map</span>
+                    <p>Loading map...</p>
+                    <p class="message-hint">Allow location access for the best experience</p>
+                </div>
+                <div id="google-map" style="width:100%;height:100%;display:none"></div>
+            </div>
+            <!-- Provider Info Panel (slides up on marker click) -->
+            <div id="provider-panel" class="provider-panel hidden">
+                <div class="panel-handle"></div>
+                <div id="provider-panel-content"></div>
+            </div>
+        </div>
+
+        <!-- INTENT CONFIRMATION SCREEN -->
+        <div id="intent-screen" class="screen">
+            <header class="screen-header">
+                <button class="icon-btn back-btn" data-back="home">
+                    <span class="material-icons-round">arrow_back</span>
+                </button>
+                <h2 class="header-title">Understanding Your Request</h2>
+            </header>
+            <div class="screen-content" id="intent-content"></div>
+        </div>
+
+        <!-- PROVIDERS SCREEN -->
+        <div id="providers-screen" class="screen">
+            <header class="screen-header">
+                <button class="icon-btn back-btn" data-back="home">
+                    <span class="material-icons-round">arrow_back</span>
+                </button>
+                <h2 class="header-title">Matched Providers</h2>
+            </header>
+            <div class="screen-content" id="providers-content"></div>
+        </div>
+
+        <!-- BOOKING CONFIRMATION SCREEN -->
+        <div id="booking-screen" class="screen">
+            <header class="screen-header">
+                <button class="icon-btn back-btn" data-back="home">
+                    <span class="material-icons-round">arrow_back</span>
+                </button>
+                <h2 class="header-title">Booking Confirmed</h2>
+            </header>
+            <div class="screen-content" id="booking-content"></div>
+        </div>
+
+        <!-- FEEDBACK SCREEN -->
+        <div id="feedback-screen" class="screen">
+            <header class="screen-header">
+                <button class="icon-btn back-btn" data-back="bookings">
+                    <span class="material-icons-round">arrow_back</span>
+                </button>
+                <h2 class="header-title">Rate Service</h2>
+            </header>
+            <div class="screen-content" id="feedback-content"></div>
+        </div>
+
+        <!-- DISPUTE SCREEN -->
+        <div id="dispute-screen" class="screen">
+            <header class="screen-header">
+                <button class="icon-btn back-btn" data-back="bookings">
+                    <span class="material-icons-round">arrow_back</span>
+                </button>
+                <h2 class="header-title">Report Issue</h2>
+            </header>
+            <div class="screen-content" id="dispute-content"></div>
+        </div>
+
+        <!-- BOOKINGS LIST SCREEN -->
+        <div id="bookings-screen" class="screen">
+            <header class="screen-header">
+                <h2 class="header-title">My Bookings</h2>
+            </header>
+            <div class="screen-content" id="bookings-list-content"></div>
+        </div>
+
+        <!-- TRACES SCREEN -->
+        <div id="traces-screen" class="screen">
+            <header class="screen-header">
+                <h2 class="header-title">🧠 AI Reasoning Traces</h2>
+                <button class="icon-btn" id="refresh-traces-btn">
+                    <span class="material-icons-round">refresh</span>
+                </button>
+            </header>
+            <div class="screen-content" id="traces-content"></div>
+        </div>
+
+        <!-- DASHBOARD SCREEN -->
+        <div id="dashboard-screen" class="screen">
+            <header class="screen-header">
+                <h2 class="header-title">Provider Dashboard</h2>
+            </header>
+            <div class="screen-content" id="dashboard-content"></div>
+        </div>
+
+        <!-- SETTINGS MODAL -->
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Settings</h3>
+                    <button class="icon-btn" id="close-settings">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div class="settings-group">
+                    <label>API Server URL</label>
+                    <input type="text" id="api-url-input" value="http://localhost:8000" class="settings-input">
+                </div>
+                <div class="settings-group">
+                    <label>User ID</label>
+                    <input type="text" id="user-id-input" value="mobile_user_1" class="settings-input">
+                </div>
+                <div class="settings-group">
+                    <label>📍 Your Location</label>
+                    <div id="current-location-display" class="location-display">
+                        <span class="material-icons-round">location_off</span>
+                        <span>Not detected yet</span>
+                    </div>
+                    <button class="secondary-btn" id="detect-location-btn" style="margin-top:8px;width:100%">
+                        <span class="material-icons-round" style="font-size:16px;vertical-align:middle">my_location</span>
+                        Use My Location (GPS)
+                    </button>
+                    <input type="hidden" id="lat-input" value="33.6310">
+                    <input type="hidden" id="lng-input" value="73.0120">
+                </div>
+                <div class="settings-group">
+                    <label>Search Radius (meters)</label>
+                    <input type="number" id="radius-input" value="5000" step="1000" min="1000" max="50000" class="settings-input">
+                </div>
+                <button class="primary-btn" id="save-settings">Save Settings</button>
+            </div>
+        </div>
+
+        <!-- LOCATION PERMISSION OVERLAY -->
+        <div id="location-overlay" class="location-overlay hidden">
+            <div class="location-prompt">
+                <div class="location-prompt-icon">📍</div>
+                <h3>Enable Location</h3>
+                <p>Allow location access so we can find the nearest service providers for you.</p>
+                <button class="primary-btn" id="allow-location-btn">Allow Location</button>
+                <button class="secondary-btn" id="skip-location-btn" style="margin-top:8px;width:100%">Skip for now</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./app.js?v=4"></script>
+</body>
+</html>
