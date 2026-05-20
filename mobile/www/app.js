@@ -1,8 +1,8 @@
 // ==================== CONFIG ====================
-let API_URL = 'http://localhost:8000';
-let USER_ID = 'mobile_user_1';
-let USER_LAT = 33.6310;
-let USER_LNG = 73.0120;
+let API_URL = localStorage.getItem('API_URL') || (window.location.protocol.startsWith('http') ? window.location.origin : 'http://localhost:8000');
+let USER_ID = localStorage.getItem('USER_ID') || 'mobile_user_1';
+let USER_LAT = parseFloat(localStorage.getItem('USER_LAT')) || 33.6310;
+let USER_LNG = parseFloat(localStorage.getItem('USER_LNG')) || 73.0120;
 let currentBooking = null;
 let pendingProvider = null; // Tracks provider awaiting WhatsApp confirmation
 let pendingProvidersList = [];
@@ -57,7 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Settings
-  document.getElementById('settings-btn').addEventListener('click', () => document.getElementById('settings-modal').classList.remove('hidden'));
+  document.getElementById('settings-btn').addEventListener('click', () => {
+    document.getElementById('api-url-input').value = API_URL;
+    document.getElementById('user-id-input').value = USER_ID;
+    document.getElementById('lat-input').value = USER_LAT;
+    document.getElementById('lng-input').value = USER_LNG;
+    document.getElementById('settings-modal').classList.remove('hidden');
+  });
   document.getElementById('close-settings').addEventListener('click', () => document.getElementById('settings-modal').classList.add('hidden'));
   document.querySelector('.modal-overlay')?.addEventListener('click', () => document.getElementById('settings-modal').classList.add('hidden'));
   document.getElementById('save-settings').addEventListener('click', saveSettings);
@@ -137,6 +143,12 @@ function saveSettings() {
   USER_ID = document.getElementById('user-id-input').value;
   USER_LAT = parseFloat(document.getElementById('lat-input').value);
   USER_LNG = parseFloat(document.getElementById('lng-input').value);
+  
+  localStorage.setItem('API_URL', API_URL);
+  localStorage.setItem('USER_ID', USER_ID);
+  localStorage.setItem('USER_LAT', USER_LAT);
+  localStorage.setItem('USER_LNG', USER_LNG);
+  
   document.getElementById('settings-modal').classList.add('hidden');
 }
 
