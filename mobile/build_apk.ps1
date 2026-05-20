@@ -34,7 +34,7 @@ if (!(Test-Path "$androidDir\cmdline-tools\latest\bin\sdkmanager.bat")) {
     Remove-Item -Path "$androidDir\cmdline-tools_temp" -Recurse -Force
 }
 
-$env:JAVA_HOME = "$androidDir\jdk"
+$env:JAVA_HOME = "$androidDir\jdk21"
 $env:ANDROID_HOME = "$androidDir"
 $env:PATH = "$env:JAVA_HOME\bin;$env:ANDROID_HOME\cmdline-tools\latest\bin;$env:ANDROID_HOME\platform-tools;$env:PATH"
 
@@ -76,6 +76,9 @@ if (!(Test-Path "android")) {
 
 Write-Host "Building APK..."
 cd "$scriptDir\android"
+if (Test-Path "app\build\outputs\apk\debug\app-debug.apk") {
+    Remove-Item "app\build\outputs\apk\debug\app-debug.apk" -Force
+}
 cmd.exe /c "gradlew.bat assembleDebug"
 
 if (Test-Path "app\build\outputs\apk\debug\app-debug.apk") {
